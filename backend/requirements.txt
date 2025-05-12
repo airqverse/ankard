@@ -1,0 +1,15 @@
+# Core framework
+Django>=5.2.1
+
+# Production-grade WSGI server
+gunicorn>=23.0.0
+
+# PostgreSQL DB connector (assuming you're using PostgreSQL)
+psycopg2-binary>=2.9.10
+
+# Environment variable support
+python-decouple>=3.8
+
+# Dev tools (optional, but very useful)
+ipython
+django-debug-toolbar
