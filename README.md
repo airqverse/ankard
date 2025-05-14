@@ -2,6 +2,7 @@
 A flashcard project to optimize my learning efficiency.
 
 ### Architecture Design
+```
 ankard/
 ├── services/
 │   ├── api_gateway/                              # Delivery layer (Django, FastAPI, etc.)
@@ -36,3 +37,4 @@ ankard/
 ├── docker-compose.yml
 ├── .env.dev
 └── README.md
+```
