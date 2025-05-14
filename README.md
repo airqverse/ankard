@@ -38,3 +38,12 @@ ankard/
 ├── .env.dev
 └── README.md                                     # Wow, I'm in myself XD
 ```
+
+### Database Responsibility
+| Layer | Reads/Writes DB? | Knows about ORM? | Role |
+| ------------- | ------------- | ------------- | ------------- |
+| Domain (models/) | ❌ | ❌ | Core business rules |
+| Value Objects | ❌ | ❌ | Pure data & rules |
+| Service Layer | ✅ | ❌ | Coordinates use cases |
+| Repository | ✅ | ✅ | Implements queries, persistence |
+| Infrastructure | ✅ | ✅ | Actual connection to DB via Django ORM |
