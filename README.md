@@ -17,6 +17,6 @@ ankard/
 ├── manage.py              # Entry for Django management
 ├── README.md              # Wow, I'm in myself XD
 ├── requirements.txt
-└── nginx/                 # ToDo
+└── nginx/
     └── default.conf
 ```
