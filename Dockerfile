@@ -1,17 +1,31 @@
 # Use official Python base image
-FROM python:3.11-slim
+FROM python:3.13.3-slim
 
-# Set working directory
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Set work directory
 WORKDIR /app
+
+# Install system dependencies (for psycopg2 etc.)
+RUN apt-get update \
+  && apt-get install -y gcc libpq-dev \
+  && pip install --upgrade pip
+
+# Copy and install dependencies
+COPY requirements.txt .
+RUN pip install -r requirements.txt \
+  && apt-get remove -y gcc \
+  && apt-get autoremove -y \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 # Copy project files
 COPY . .
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy .env file
+COPY .env .env
 
-# Expose Gunicorn port
-EXPOSE 8000
-
-# Run Django via Gunicorn
-CMD ["gunicorn", "django_app.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Gunicorn command
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]

@@ -1,15 +1,18 @@
-version: "3.9"
-
 services:
   web:
     build: .
-    container_name: django_web
-    ports:
-      - "8000:8000"
+    container_name: ankard_web
+    env_file: .env
     volumes:
       - .:/app
-    env_file:
-      - .env
+    expose:
+      - "8000"
 
-# To-Do
-#   - Add Nginx configuration here.
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web
