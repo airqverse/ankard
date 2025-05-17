@@ -4,51 +4,19 @@ A flashcard project to optimize my learning efficiency.
 ### Architecture Design
 ```
 ankard/
-├── app/
-│   ├── api/                                      # Delivery layer (Django, FastAPI, etc.)
-│   │   ├── controller/                           # Views, DRF ViewSets, serializers
-│   │   ├── settings/                             # Django project(config) folder
-│   │   ├── urls.py
-│   │   ├── manage.py
-│   │   ├── Dockerfile
-│   │   └── requirements.txt
-│   │
-│   ├── core/                                     # Application & domain logic
-│   │   ├── domains/                              # Entities, aggregates, value objects
-│   │   │   └── users/
-│   │   │       ├── models/
-│   │   │       │   └── user.py                   # Domain Entity
-│   │   │       └── events/
-│   │   ├── services/                             # Service layer = Application orchestration
-│   │   │   └── users/
-│   │   │       ├── register_user_service.py
-│   │   │       └── change_email_service.py
-│   │   ├── interfaces/                           # Infrastructure ports (DB, APIs, etc.)
-│   │   │   └── repositories/
-│   │   ├── shared/                               # Reusable validators, enums, exceptions
-│   │   │   └── value_objects/
-│   │   ├── middlewares/
-│   │   ├── exceptions/
-│   │   └── logger/
-│   │
-│   └── tests/
-│       ├── unit
-│       └── integration
-│
-├── web/                                          # SPA frontend
-│   ├── src/
-│   ├── public/
-│   ├── package.json
-│   └── Dockerfile
+├── config/                # Django project folder
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── .env
+├── .gitignore
 ├── docker-compose.yml
-└── README.md                                     # Wow, I'm in myself XD
+├── Dockerfile
+├── manage.py              # Entry for Django management
+├── README.md              # Wow, I'm in myself XD
+├── requirements.txt
+└── nginx/                 # ToDo
+    └── default.conf
 ```
-
-### Database Responsibility
-| Layer | Reads/Writes DB? | Knows about ORM? | Role |
-| ----- | ---------------- | ---------------- | ---- |
-| Domain (models/) | ❌ | ❌ | Core business rules |
-| Value Objects | ❌ | ❌ | Pure data & rules |
-| Service Layer | ✅ | ❌ | Coordinates use cases |
-| Repository | ✅ | ✅ | Implements queries, persistence |
-| Infrastructure | ✅ | ✅ | Actual connection to DB via Django ORM |
