@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 
 # Create your views here.
 
@@ -12,28 +12,28 @@ from django.http import HttpResponse, HttpResponseNotFound
 # def march(request):
 #     return HttpResponse("Learn Django for at least 20 minutes everyday!")
 
-def monthly_challenge_by_number(request, month):
-    challenge_text = None
-    if month == 1:
-        challenge_text = 1
-    elif month == 2:
-        challenge_text = 2
-    elif month == 3:
-        challenge_text = 3
-    else:
-        return HttpResponseNotFound("Month(int): " + str(month) + " is not supported.")
+monthly_challenges = {
+    "january": "Here is january challenges!",
+    "february": "Here is february challenges!",
+    "march": "Here is march challenges!",
+    "april": "Here is april challenges!",
+    "may": "Here is may challenges!",
+    "june": "Here is june challenges!",
+    "july": "Here is july challenges!",
+    "august": "Here is august challenges!",
+    "september": "Here is september challenges!",
+    "october": "Here is october challenges!",
+    "november": "Here is november challenges!",
+    "december": "Here is december challenges!"
+}
 
-    return HttpResponse(challenge_text)
+def monthly_challenge_by_number(request, month):
+    months = list(monthly_challenges.keys())
+    redirect_month = months[month-1]
+    return HttpResponseRedirect("/challenges/" + redirect_month)
 
 def monthly_challenge(request, month):
-    challenge_text = None
-    if month == "january":
-        challenge_text = "Jan: Eat no meat for the entire month!"
-    elif month == "february":
-        challenge_text = "Feb: Walk for at least 20 minutes everyday!"
-    elif month == "march":
-        challenge_text = "Mar: Learn Django for at least 20 minutes everyday!"
-    else:
+    try:
+        return HttpResponse(monthly_challenges[month])
+    except:
         return HttpResponseNotFound("Month(str): " + month + " is not supported.")
-
-    return HttpResponse(challenge_text)
