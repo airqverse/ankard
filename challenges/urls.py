@@ -3,10 +3,8 @@ from . import views
 
 # Paths defined here would be read in ordinally.
 urlpatterns = [
-    # path("january", views.january),
-    # path("february", views.february),
-    # path("march", views.march),
-
+    # path for https://ankard.jp/challenges/
+    path("", views.index),
     # The word "month" in "<month>" has to be correspondent to
     # the argument name in views.monthly_challenge function.
     path("<int:month>", views.monthly_challenge_by_number, name="month-challenge-by-number"),
