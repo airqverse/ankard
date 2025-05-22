@@ -4,19 +4,21 @@ from django.urls import reverse
 
 # Create your views here.
 
+page_title = "Monthly Challenge"
+
 monthly_challenges = {
-    "january": "Here is january challenges!",
-    "february": "Here is february challenges!",
-    "march": "Here is march challenges!",
-    "april": "Here is april challenges!",
-    "may": "Here is may challenges!",
-    "june": "Here is june challenges!",
-    "july": "Here is july challenges!",
-    "august": "Here is august challenges!",
-    "september": "Here is september challenges!",
-    "october": "Here is october challenges!",
-    "november": "Here is november challenges!",
-    "december": "Here is december challenges!",
+    "january": "Here is January's challenge!",
+    "february": "Here is February's challenge!",
+    "march": "Here is March's challenge!",
+    "april": "Here is April's challenge!",
+    "may": "Here is May's challenge!",
+    "june": "Here is June's challenge!",
+    "july": "Here is July's challenge!",
+    "august": "Here is August's challenge!",
+    "september": "Here is September's challenge!",
+    "october": "Here is October's challenge!",
+    "november": "Here is November's challenge!",
+    "december": "Here is December's challenge!",
 }
 
 def index(request):
@@ -46,7 +48,13 @@ def monthly_challenge_by_number(request, month):
 def monthly_challenge(request, month):
     try:
         challenge_text = monthly_challenges[month]
+        monthly_title = month.capitalize() + "'s Challenge"
         # render() acts as "render_to_string() + HttpResponse()"
-        return render(request, "challenges/challenge.html")
+        return render(request, "challenges/challenge.html", {
+            # Send data to frontend as "context"
+            "page_title": page_title,
+            "monthly_title": monthly_title,
+            "text": challenge_text,
+        })
     except:
         return HttpResponseNotFound("Month(str): " + month + " is not supported.")
