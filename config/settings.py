@@ -34,12 +34,15 @@ ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', cast=Csv())
 # Application definition
 
 INSTALLED_APPS = [
+    # Built-in apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Apps added by airq
+    'challenges',
 ]
 
 MIDDLEWARE = [
@@ -57,8 +60,13 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        # DIRS: Manually specify extra template directories
+        'DIRS': [
+            # Below works well, but we can utilize APP_DIRS instead
+            # BASE_DIR / "challenges" / "templates"
+        ],
+        # APP_DIRS: Automatically look for templates inside a folder called templates/ within each installed app listed in INSTALLED_APPS
+        'APP_DIRS': True, # Using APP_DIRS is recommended
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
