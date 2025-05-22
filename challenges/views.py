@@ -46,6 +46,8 @@ def monthly_challenge_by_number(request, month):
 
 def monthly_challenge(request, month):
     challenge_text = monthly_challenges[month]
+    # The reason not to place challenge.html directly into root/challenges/templates/
+    # is because other app could also have html file named challenge.html
     response_data = render_to_string("challenges/challenge.html")
     try:
         return HttpResponse(response_data)
