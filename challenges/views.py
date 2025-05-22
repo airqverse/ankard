@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
-from django.template.loader import render_to_string
 
 # Create your views here.
 
@@ -45,11 +44,9 @@ def monthly_challenge_by_number(request, month):
     return HttpResponseRedirect(redirect_path)
 
 def monthly_challenge(request, month):
-    challenge_text = monthly_challenges[month]
-    # The reason not to place challenge.html directly into root/challenges/templates/
-    # is because other app could also have html file named challenge.html
-    response_data = render_to_string("challenges/challenge.html")
     try:
-        return HttpResponse(response_data)
+        challenge_text = monthly_challenges[month]
+        # render() acts as "render_to_string() + HttpResponse()"
+        return render(request, "challenges/challenge.html")
     except:
         return HttpResponseNotFound("Month(str): " + month + " is not supported.")
