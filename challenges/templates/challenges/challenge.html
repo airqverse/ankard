@@ -7,6 +7,14 @@
 </head>
 <body>
   <h1>{{ month_name|title }}'s Challenge</h1>
-  <h2>{{ text }}</h2>
+  {% comment %}
+    Doc for url tag:
+      https://docs.djangoproject.com/en/5.2/ref/templates/builtins/#if
+  {% endcomment %}
+  {% if text is not None %}
+    <h2>{{ text }}</h2>
+  {% else %}
+    <p>There is no challenge for this month yet!</p>
+  {% endif %}
 </body>
 </html>

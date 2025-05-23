@@ -16,7 +16,7 @@ monthly_challenges = {
     "september": "Learn Django!",
     "october": "Learn Data Structure!",
     "november": "Learn TCP/IP!",
-    "december": "Learn Linux!",
+    "december": None,
 }
 
 def index(request):
