@@ -9,7 +9,11 @@
   <h1>Monthly Challenge List</h1>
   {% for month in month_list %}
     <ul>
-      <li><a href="./{{ month }}">{{ month|title }}</a></li>
+      {% comment %}
+        Doc for url tag:
+          https://docs.djangoproject.com/en/5.2/ref/templates/builtins/#url
+      {% endcomment %}
+      <li><a href="{% url "month-challenge" month=month %}">{{ month|title }}</a></li>
     </ul>
   {% endfor %}
 </body>
