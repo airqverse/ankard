@@ -49,7 +49,8 @@ def monthly_challenge(request, month):
         # render() acts as "render_to_string() + HttpResponse()"
         return render(request, "challenges/challenge.html", {
             # Send data to frontend as "context"
-            "month_name": month.capitalize(),
+            # Capitalize month in frontend with filter "...|title" to avoid string formatting in backend
+            "month_name": month,
             "text": challenge_text,
         })
     except:
