@@ -1,20 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Challenges Top</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block html_title %}
+  Challenges Top
+{% endblock %}
+
+{% block html_body %}
   <h1>Monthly Challenge List</h1>
   {% for month in month_list %}
     <ul>
       {% comment %}
-        Doc for url tag:
+        Doc for url-tag:
           https://docs.djangoproject.com/en/5.2/ref/templates/builtins/#url
       {% endcomment %}
       <li><a href="{% url "month-challenge" month=month %}">{{ month|title }}</a></li>
     </ul>
   {% endfor %}
-</body>
-</html>
+{% endblock %}

@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Apps added by airq
+    # Apps added by airq.
     'challenges',
 ]
 
@@ -60,13 +60,14 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # DIRS: Manually specify extra template directories
+        # DIRS: Manually specify extra template directories.
+        # Use DIRS for HTML files outside of "<django-app>/templates/"; otherwise, use APP_DIRS instead.
         'DIRS': [
-            # Below works well, but we can utilize APP_DIRS instead
-            # BASE_DIR / "challenges" / "templates"
+            BASE_DIR / "templates"
         ],
-        # APP_DIRS: Automatically look for templates inside a folder called templates/ within each installed app listed in INSTALLED_APPS
-        'APP_DIRS': True, # Using APP_DIRS is recommended
+        # APP_DIRS: Automatically look for templates inside templates/ folder within each installed app listed in INSTALLED_APPS.
+        # Use APP_DIRS for HTML files located in "<django-app>/templates/".
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
