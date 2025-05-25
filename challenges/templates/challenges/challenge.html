@@ -5,7 +5,10 @@
 {% endblock%}
 
 {% block html_body %}
+  {% include "challenges/includes/header.html" with active_page="challenge" %}
+
   <h1>{{ month_name|title }}'s Challenge</h1>
+
   {% comment %}
     Doc for if-tag:
       https://docs.djangoproject.com/en/5.2/ref/templates/builtins/#if

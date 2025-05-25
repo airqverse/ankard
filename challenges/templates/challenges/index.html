@@ -5,7 +5,10 @@
 {% endblock %}
 
 {% block html_body %}
+  {% include "challenges/includes/header.html" with active_page="index" %}
+
   <h1>Monthly Challenge List</h1>
+
   {% for month in month_list %}
     <ul>
       {% comment %}

@@ -1,0 +1,23 @@
+<header>
+  <div>>>> Header >>></div>
+  <nav>
+    <a href="{% url "index" %}">Top Page</a>
+  </nav>
+
+  {% comment %}
+    Important:
+    The "month_name" variable will only be available in this HTML file if
+    "header.html" is included in a parent template that defines the same variable.
+    If the parent template doesn't define "month_name", it won't be available here,
+    thus the part "{{ month_name }}" would display nothing.
+  {% endcomment %}
+  <p>Current month: {{ month_name|title }}</p>
+
+  {% comment %}
+    Important:
+    The "active_page" variable is defined via the include-tag in the parent template.
+    Note that you can define variables specifically for each included template.
+  {% endcomment %}
+  <p>Current page: {{ active_page|title }}</p>
+  <div><<< Header <<<</div>
+</header>
