@@ -1,30 +1,92 @@
-# This file needs to be modified in production.
 services:
-  web:
-    build: .
-    container_name: ankard_web
-    env_file: .env
+# ╔═════════════════════════════════════════╗
+# ║                Backend                  ║
+# ╚═════════════════════════════════════════╝
+  backend:
+    build:
+      # "build: context" is the directory sent to the Docker engine during the build.
+      # It usually contains the Dockerfile and the application source code.
+      context: ./backend
+    env_file: ./backend/.env
     volumes:
-      - .:/app
+      - ./backend:/app
     expose:
       - "8000"
-    # Development only: enables hot-reload on code changes using Gunicorn. Remove '--reload' in production.
-    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000 --reload
     restart: unless-stopped
     networks:
       - ankard_net
 
+  backend-dev: # $ docker compose --profile dev up
+    extends:
+      service: backend
+    profiles: ["dev"]
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000 --reload
+
+  backend-prod: # $ docker compose --profile prod up
+    extends:
+      service: backend
+    profiles: ["prod"]
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
+
+# ╔═════════════════════════════════════════╗
+# ║                Frontend                 ║
+# ╚═════════════════════════════════════════╝
+  frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "3000:80" # Port: 80 corresponds to "EXPOSE port" defined in Dockerfile.
+      # - "5173:5173"  # Use this one if dev(npm run dev)/prod switching is enabled later.
+    restart: unless-stopped
+    networks:
+      - ankard_net
+    depends_on:
+      - backend
+
+  # airq: For now at early stage of project, let's not separate dev/prod for frontend.
+  # frontend-dev: # $ docker compose --profile dev up
+  #   extends:
+  #     service: frontend
+  #   profiles: ["dev"]
+  #   command: npm run dev
+
+  # frontend-prod: # $ docker compose --profile prod up
+  #   extends:
+  #     service: frontend
+  #   profiles: ["prod"]
+
+# ╔═════════════════════════════════════════╗
+# ║                 Nginx                   ║
+# ╚═════════════════════════════════════════╝
   nginx:
-    image: nginx:1.28.0
+    build:
+      context: ./nginx
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - /etc/letsencrypt:/etc/letsencrypt:ro
+      # ro: read-only
+      - letsencrypt:/etc/letsencrypt:ro
+      - ./webroot:/var/www/html
     depends_on:
-      - web
+      - backend
+      - frontend
     restart: unless-stopped
+    networks:
+      - ankard_net
+
+# ╔═════════════════════════════════════════╗
+# ║                Certbot                  ║
+# ╚═════════════════════════════════════════╝
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - letsencrypt:/etc/letsencrypt
+      - ./webroot:/var/www/html
+    # Certbot will generate and save SSL certificates into the named volume "letsencrypt".
+    command: certonly --webroot -w /var/www/html -d ankard.jp --email airq1106@gmail.com --agree-tos
     networks:
       - ankard_net
 
@@ -35,3 +97,6 @@ services:
 networks:
   ankard_net:
     driver: bridge
+
+volumes:
+  letsencrypt:
