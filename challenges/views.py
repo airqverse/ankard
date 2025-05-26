@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect, Http404
 from django.urls import reverse
 
 # Create your views here.
@@ -48,4 +48,7 @@ def monthly_challenge(request, month):
             "text": challenge_text,
         })
     except:
-        return HttpResponseNotFound("Month(str): " + month + " is not supported.")
+        # To render the 404.html page on a 404 error, set DEBUG=False in settings.py.
+        # When raised, Http404() will automatically display "ankard/templates/404.html".
+        # .env was updated to use DJANGO_DEBUG=False by airq on 2025/05/26.
+        raise Http404()
