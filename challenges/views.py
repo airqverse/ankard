@@ -50,5 +50,4 @@ def monthly_challenge(request, month):
     except:
         # To render the 404.html page on a 404 error, set DEBUG=False in settings.py.
         # When raised, Http404() will automatically display "ankard/templates/404.html".
-        # .env was updated to use DJANGO_DEBUG=False by airq on 2025/05/26.
         raise Http404()
