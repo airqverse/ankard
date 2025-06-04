@@ -4,19 +4,26 @@ A flashcard project to optimize my learning efficiency.
 ### Architecture Design
 ```
 ankard/
-├── config/                # Django project folder
-│   ├── __init__.py
-│   ├── asgi.py
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
-├── .env
+├── backend/
+│   ├── apps/
+│   ├── config/
+│   ├── manage.py
+│   ├── requirements.txt
+│   ├── static/
+|   ├── .env
+│   └── Dockerfile
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   ├── tsconfig.json
+│   ├── package.json
+│   ├── vite.config.js
+│   ├── Dockerfile
+│   └── dist/
+├── nginx/                 # TODO: Update for production. Use values from .env.
+│   ├── default.conf
+│   └── Dockerfile
+├── docker-compose.yml     # TODO: Update for production. Use values from .env.
 ├── .gitignore
-├── docker-compose.yml
-├── Dockerfile
-├── manage.py              # Entry for Django management
-├── README.md              # Wow, I'm in myself XD
-├── requirements.txt
-└── nginx/
-    └── default.conf
+└── README.md
 ```
