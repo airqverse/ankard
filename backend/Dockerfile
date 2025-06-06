@@ -21,11 +21,8 @@ RUN pip install -r requirements.txt \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-# Copy project files
+# Copy project files (This should be done after installing dependencies in requirements.txt)
 COPY . .
-
-# Copy .env file
-COPY .env .env
 
 # Gunicorn command
 CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]
