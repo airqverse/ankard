@@ -10,23 +10,28 @@ services:
     env_file: ./backend/.env
     volumes:
       - ./backend:/app
+    # The expose directive in docker-compose.yml is used to declare ports that are
+    # accessible to other linked services within the same Docker Compose network,
+    # without publishing them to the host machine.
     expose:
       - "8000"
     restart: unless-stopped
     networks:
       - ankard_net
 
-  backend-dev: # $ docker compose --profile dev up
-    extends:
-      service: backend
-    profiles: ["dev"]
-    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000 --reload
+  # airq: For now at early stage of project, let's not separate dev/prod for backend.
+  # backend-dev: # $ docker compose --profile dev up
+  #   extends:
+  #     service: backend
+  #   profiles: ["dev"]
+  #   command: gunicorn config.wsgi:application --bind 0.0.0.0:8000 --reload
 
-  backend-prod: # $ docker compose --profile prod up
-    extends:
-      service: backend
-    profiles: ["prod"]
-    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
+  # airq: For now at early stage of project, let's not separate dev/prod for backend.
+  # backend-prod: # $ docker compose --profile prod up
+  #   extends:
+  #     service: backend
+  #   profiles: ["prod"]
+  #   command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
 
 # ╔═════════════════════════════════════════╗
 # ║                Frontend                 ║
@@ -36,9 +41,6 @@ services:
       context: ./frontend
     volumes:
       - ./frontend:/app
-    ports:
-      - "3000:80" # Port: 80 corresponds to "EXPOSE port" defined in Dockerfile.
-      # - "5173:5173"  # Use this one if dev(npm run dev)/prod switching is enabled later.
     restart: unless-stopped
     networks:
       - ankard_net
