@@ -21,7 +21,8 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Optional: Replace default nginx config if needed
 # COPY nginx.conf /etc/nginx/nginx.conf
 
-# Expose port
+# Inform Docker that this container will listen on port 80.
+# The reason not using 433 is because this port is used internally by containers.
 EXPOSE 80
 
 # Default command (nginx will auto-start)
