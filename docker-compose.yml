@@ -3,6 +3,7 @@ services:
 # ║                Backend                  ║
 # ╚═════════════════════════════════════════╝
   backend:
+    profiles: ["prod"]
     build:
       # "build: context" is the directory sent to the Docker engine during the build.
       # It usually contains the Dockerfile and the application source code.
@@ -18,25 +19,27 @@ services:
     restart: unless-stopped
     networks:
       - ankard_net
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
 
-  # airq: For now at early stage of project, let's not separate dev/prod for backend.
-  # backend-dev: # $ docker compose --profile dev up
-  #   extends:
-  #     service: backend
-  #   profiles: ["dev"]
-  #   command: gunicorn config.wsgi:application --bind 0.0.0.0:8000 --reload
-
-  # airq: For now at early stage of project, let's not separate dev/prod for backend.
-  # backend-prod: # $ docker compose --profile prod up
-  #   extends:
-  #     service: backend
-  #   profiles: ["prod"]
-  #   command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
+  backend-dev:
+    profiles: ["dev"]
+    build:
+      context: ./backend
+    env_file: ./backend/.env
+    volumes:
+     - ./backend:/app
+    expose:
+      - "8000"
+    restart: unless-stopped
+    networks:
+      - ankard_net
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000 --reload
 
 # ╔═════════════════════════════════════════╗
 # ║                Frontend                 ║
 # ╚═════════════════════════════════════════╝
   frontend:
+    profiles: ["prod"]
     build:
       context: ./frontend
     volumes:
@@ -47,26 +50,28 @@ services:
     depends_on:
       - backend
 
-  # airq: For now at early stage of project, let's not separate dev/prod for frontend.
-  # frontend-dev: # $ docker compose --profile dev up
-  #   extends:
-  #     service: frontend
-  #   profiles: ["dev"]
-  #   command: npm run dev
-  #   depends_on:
-  #     - backend-dev
-
-  # frontend-prod: # $ docker compose --profile prod up
-  #   extends:
-  #     service: frontend
-  #   profiles: ["prod"]
+  frontend-dev:
+    profiles: ["dev"]
+    build:
+      context: ./frontend
+    volumes:
+      - ./frontend:/app
+    restart: unless-stopped
+    networks:
+      - ankard_net
+    depends_on:
+      - backend-dev
+    # command: npm run dev
 
 # ╔═════════════════════════════════════════╗
 # ║                 Nginx                   ║
 # ╚═════════════════════════════════════════╝
   nginx:
+    profiles: ["prod"]
     build:
       context: ./nginx
+      args:
+        NGINX_CONF: default.prod.conf
     ports:
       - "80:80"
       - "443:443"
@@ -77,6 +82,26 @@ services:
     depends_on:
       - backend
       - frontend
+    restart: unless-stopped
+    networks:
+      - ankard_net
+
+  nginx-dev:
+    profiles: ["dev"]
+    build:
+      context: ./nginx
+      args:
+        NGINX_CONF: default.dev.conf
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # ro: read-only
+      - letsencrypt:/etc/letsencrypt:ro
+      - ./webroot:/var/www/html
+    depends_on:
+      - backend-dev
+      - frontend-dev
     restart: unless-stopped
     networks:
       - ankard_net

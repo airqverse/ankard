@@ -23,6 +23,3 @@ RUN pip install -r requirements.txt \
 
 # Copy project files (This should be done after installing dependencies in requirements.txt)
 COPY . .
-
-# Gunicorn command
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]
