@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import styles from './LoginPage.module.css';
 
-const LoginPage: React.FC = () => {
+interface LoginPageProps {
+  message: string;
+}
+
+const LoginPage: React.FC<LoginPageProps> = ({ message }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -15,6 +19,7 @@ const LoginPage: React.FC = () => {
   return (
     <div className={styles.loginContainer}>
       <h1 className={styles.title}>Login</h1>
+      <p>{message}</p>
       <form onSubmit={handleSubmit} className={styles.loginForm}>
         <div className={styles.inputGroup}>
           <label htmlFor="username" className={styles.label}>Username:</label>
