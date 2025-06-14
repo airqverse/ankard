@@ -2,6 +2,7 @@ asgiref==3.8.1
 asttokens==3.0.0
 decorator==5.2.1
 Django==5.2.1
+django-ninja==1.4.3
 django-debug-toolbar==5.2.0
 executing==2.2.0
 gunicorn==23.0.0

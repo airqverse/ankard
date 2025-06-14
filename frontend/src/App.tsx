@@ -9,7 +9,7 @@ function App() {
       try {
         const response = await fetch('/api/hello');
         const data = await response.json(); // Assuming your Django Ninja API returns JSON
-        setHelloMessage(data);
+        setHelloMessage(data.message);
       } catch (error) {
         console.error('Error fetching hello message:', error);
         setHelloMessage('Failed to load message.');
